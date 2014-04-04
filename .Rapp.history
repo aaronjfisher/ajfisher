@@ -1,0 +1,1838 @@
+Function for adding jittered background points to a plot.#
+plot_pts_for_CI_plot <- function(plotStyle='n100ref',type='sense',data=multi_try_data,cut=cut,jit_factor_x=1.2,jit_factor_y=1.2,y2lab,...){#
+  #style %in% plotStyle lets us use the same function for an aggregate plot#
+	ind1<- data$attemptNum <= cut#
+	ind2<- !data$trueSig#
+	if(type=='sense') ind2 <- data$trueSig#
+	ind3<-data$style %in% plotStyle#
+	d<- data[ind1 & ind2 & ind3,]#
+	plot(1,ylim=c(.8,2.2),xlim=c(0,1),col='darkgray',cex=.5,xaxt='n',yaxt='n', ...)#
+}#
+#
+#Function for adding CIs to a plot (CIs for accuracy)#
+add2plot_LearnCImats<-function(ciMat, ...){#
+	cut<-dim(ciMat)[1]#
+	plotCI(y=1:cut,x=ciMat[,'centerProb'],ui=ciMat[,'uiProb'],li=ciMat[,'liProb'],pch=19,cex=.5,add=TRUE,err='x', ...)#
+	axis(2, at=(1:cut), labels=1:cut) #need to reorder labels so they go down, not up#
+	xLabels<-seq(0,100,length=6)#
+	axis(1, at=xLabels/100, labels=xLabels) #need to reorder labels so they go down, not up#
+	abline(v=.5,lty=2,col='darkgray')	#
+}#
+#
+#SENSE#
+#png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=550,width=550,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(3,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='Attempt Number',side=2,line=2.5,cex=.85)
+par(mfcol=c(1,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='Attempt Number',side=2,line=2.5,cex=.85)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)
+plot(1,ylim=c(.8,2.2),xlim=c(0,1),col='darkgray',cex=.5,xaxt='n',yaxt='n',type='n', ...)
+Function for adding jittered background points to a plot.#
+plot_pts_for_CI_plot <- function(plotStyle='n100ref',type='sense',data=multi_try_data,cut=cut,jit_factor_x=1.2,jit_factor_y=1.2,y2lab,...){#
+  #style %in% plotStyle lets us use the same function for an aggregate plot#
+	ind1<- data$attemptNum <= cut#
+	ind2<- !data$trueSig#
+	if(type=='sense') ind2 <- data$trueSig#
+	ind3<-data$style %in% plotStyle#
+	d<- data[ind1 & ind2 & ind3,]#
+	plot(1,ylim=c(.8,2.2),xlim=c(0,1),col='darkgray',cex=.5,xaxt='n',yaxt='n',type='n', ...)#
+}
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='Attempt Number',side=2,line=2.5,cex=.85)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=500,width=840,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='Attempt Number',side=2,line=2.5,cex=.85)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=300,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='Attempt Number',side=2,line=2.5,cex=.85)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=2.5,font=2)#
+mtext(text='Reference',side=3,line=0.2,cex=.899)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=400,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.5,cex=.85)#
+mtext(text='% Accuracy',side=1,line=1.5,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=3,cex=.85)
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=400,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,3,1,1),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=.85)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=400,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,0),oma=c(3,3,3,3))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=.85)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=400,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(1,1,0,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=.85)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=400,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,2,0,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=.85)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=400,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,1,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=.85)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=340,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,1,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=.85)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2)#
+mtext(text='% Accuracy',side=1,line=2,cex=.85)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=340,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,1,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=1)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=310,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,2,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=1)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2)#
+mtext(text='Non-significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+dev.off()
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=310,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,2,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=1)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n1#
+	00ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2,noYaxis=TRUE)#
+mtext(text='Non-significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+dev.off()
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))
+add2plot_LearnCImats(ciMat_learn_spec[['n1
+00ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2,noYaxis=TRUE)
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2,noYaxis=TRUE)
+add2plot_LearnCImats<-function(ciMat,noYaxis=FALSE, ...){#
+	cut<-dim(ciMat)[1]#
+	plotCI(y=1:cut,x=ciMat[,'centerProb'],ui=ciMat[,'uiProb'],li=ciMat[,'liProb'],pch=19,cex=.5,add=TRUE,err='x',ylab='n', ...)#
+	abline(v=.5,lty=2,col='darkgray')	#
+	if(noYaxis)return()#
+#
+	axis(2, at=(1:cut), labels=1:cut) #need to reorder labels so they go down, not up#
+	xLabels<-seq(0,100,length=6)#
+	axis(1, at=xLabels/100, labels=xLabels) #need to reorder labels so they go down, not up#
+}
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,2,1,1),oma=c(0,2,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=1)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2,noYaxis=TRUE)#
+mtext(text='Non-significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)
+add2plot_LearnCImats<-function(ciMat,noYaxis=FALSE, ...){#
+	cut<-dim(ciMat)[1]#
+	plotCI(y=1:cut,x=ciMat[,'centerProb'],ui=ciMat[,'uiProb'],li=ciMat[,'liProb'],pch=19,cex=.5,add=TRUE,err='x',ylab='n', ...)#
+	abline(v=.5,lty=2,col='darkgray')	#
+	xLabels<-seq(0,100,length=6)#
+	axis(1, at=xLabels/100, labels=xLabels) #need to reorder labels so they go down, not up#
+	if(noYaxis)return()#
+#
+	axis(2, at=(1:cut), labels=1:cut) #need to reorder labels so they go down, not up#
+}#
+#
+#SENSE
+png(file=paste0('/Users/aaronfisher/Documents/JH/EDA Versions/EDA Git Repo/presentations/',Sys.Date(),'_learning_sense_&_spec_plot_more_labels2_flip.png'),height=310,width=640,pointsize=19)#
+ciMat_learn_sense<-getCIlearn(glmmSenseLearn_rIntercept)#
+#
+par(mfcol=c(1,2),mar=c(4,1,1,1),oma=c(0,2,3,0))#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='sense',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''),xlab='',ylab='')#
+add2plot_LearnCImats(ciMat_learn_sense[['n100ref']],col='darkblue',lwd=2)#
+mtext(text='Truly Significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='Attempt Number',side=2,line=2.1,cex=1)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+#SPEC#
+ciMat_learn_spec<-getCIlearn(glmmSpecLearn_rIntercept)#
+#
+plot_pts_for_CI_plot(plotStyle='n100ref',type='spec',xlab='',ylab='',cut=cut,jit_factor_x=1,jit_factor_y=1,y2lab=c('',''))#
+add2plot_LearnCImats(ciMat_learn_spec[['n100ref']],main='',col='darkred',ylab='Specificity',ylim=c(-.2,1.2),xlim=c(.5,cut+.5),lwd=2,noYaxis=TRUE)#
+mtext(text='Non-significant',side=3,line=.6,font=2,cex=1.2)#
+mtext(text='% Accuracy',side=1,line=2,cex=1)#
+dev.off()
+mtcars
+gc(reset=TRUE)[,-c(3,4)]
+x <- rep(0L, 1000000) #vector of integers
+is.integer(x)
+object.size(x)
+gc(reset=TRUE)[,-c(3,4)]
+ls()
+x <- x + 1
+is.integer(x)
+is.integer(1)
+object.size(x)
+gc(reset=TRUE)
+object.size(x) #now x actually has to be stored as an integer.
+gc(reset=TRUE)[,-c(3,4)]
+?gc
+x <- matrix(1:1e6, nrow=4)#
+system.time({#
+  ans <- apply(x, 2, sum)#
+})
+j
+j=1
+j+=3
+j
+j += 3
+j
+library(parallel)
+cl <- makeCluster(c("localhost","localhost"))
+parSapply(cl, 1:9, function(x) x^2)
+stopCluster(cl)
+library(doMC)   # Which also loads foreach
+registerDoMC(2)
+install.packages(doMC)
+install.packages('doMC')
+registerDoMC(2) # 2 processor cores
+library(doMC)
+registerDoMC(2) # 2 processor cores#
+system.time({#
+  indices <- list(1:125000, 125001:250000)#
+  ans <- foreach(i=indices,#
+                 .combine=c) %dopar%#
+         {#
+           return(apply(x[,i], 2, sum))#
+         }#
+})
+ans
+39/40
+34/40
+37.5/40
+!!!!!!!!!!!!!!#
+# !!!!!!!!!!!!!!!!!!!#
+#        !SET WD!#
+# setwd("/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD")#
+# !!!!!!!!!!!!!!!!!!!!#
+#    !!!!!!!!!!!!!!#
+library(multicore)#
+library(RColorBrewer)#
+library(mgcv)#
+library(reshape)#
+library(ggplot2)#
+source("bootstrap_functions.R")#
+mc.cores<-2#
+#################################################
+#################################################
+#################################################
+#build data for simulations#
+#
+# empirical_estimates<-list(p900=list(),p5000=list(),p20000=list())#
+# Y_with_mean_base_presmooth<-as.matrix(read.csv('data/EEG_PCA_table_p900.csv'))#
+# Y_with_mean_base<-apply(Y_with_mean_base_presmooth,2,function(v) lowess(v,f=1/30)$y)#
+# #check for NAs#
+# if(any(is.na(Y_with_mean_base))) stop('error!! NAs!? Why!?') #stop will cause an error itself#
+#
+# for(res in 1:3){#
+#
+# 	#################
+# 	#TEMPORARY CODE TO IMPUTE EXTRA DIMENSIONS#
+# 	if(res==1)Y_with_mean<-Y_with_mean_base#
+# 	if(res>1){#
+# 		n<-dim(Y_with_mean_base)[2] #repeated later#
+# 		p<-c(900,5000,20000)[res]#
+# 		Y_with_mean<-matrix(NA,p,n)#
+# 		for(i in 1:n) Y_with_mean[,i]<- approx(Y_with_mean_base[,i],n=p)$y#+rnorm(p,mean=0,sd=.05)#
+# 	}#
+# 	#quick viz check#
+# 	#matplot(Y_with_mean[,1:2],type='l',lty=1,ylim=c(0,1))#
+# 	#matplot(Y_with_mean_base[,1:2],type='l',lty=1,ylim=c(0,1))#
+# 	#################
+#
+# 	#check for NAs#
+# 	if(any(is.na(Y_with_mean))) stop('error!! NAs!? Why!?') #stop will cause an error itself#
+#
+# 	#get n and p#
+# 	print(paste('dimension =',dim(Y_with_mean)))#
+# 	p<-dim(Y_with_mean)[1]#
+# 	n<-dim(Y_with_mean)[2]#
+# 	Y_with_mean<-as.matrix(Y_with_mean)#
+#
+# 	#demean Y_with_mean#
+# 	mu<-rowMeans(Y_with_mean)#
+# 	Y<-Y_with_mean%*%(diag(n)-matrix(1/n,n,n))#
+# 	print(range(rowMeans(Y)))#
+# 	print('demeaned')#
+#
+# 	#get svd#
+# 	svdtY<-fastSvdWide(t(Y)) #Sets Y=UDV'#
+# 	V<-svdtY$v#
+# 	D<-diag(svdtY$d)#
+# 	d<-svdtY$d#
+# 	U<-svdtY$u #
+# 	UD<- U %*% D#
+# 	print('got SVD')#
+#
+# 	if(p==900){#
+# 		empirical_estimates$p900$DUt<-t(UD)#
+# 		empirical_estimates$p900$V<-V#
+# 		empirical_estimates$p900$mu<-mu#
+# 	}#
+# 	if(p==5000){#
+# 		empirical_estimates$p5000$DUt<-t(UD)#
+# 		empirical_estimates$p5000$V<-V#
+# 		empirical_estimates$p5000$mu<-mu#
+# 	}#
+# 	if(p==20000){#
+# 		empirical_estimates$p20000$DUt<-t(UD)#
+# 		empirical_estimates$p20000$V<-V#
+# 		empirical_estimates$p20000$mu<-mu#
+# 	}#
+#
+# }#
+# #range(empirical_estimates$p900$V %*% empirical_estimates$p900$DUt - Y)#
+# #range(empirical_estimates$p5000$V %*% empirical_estimates$p5000$DUt - Y)#
+#
+# os(empirical_estimates)#
+# os(empirical_estimates$p20000$V)#
+# dim(empirical_estimates$p20000$V)#
+#
+# saveRDS(empirical_estimates,file='data/empirical_estimates.rds') #for use with simulation#
+# #End saving data for simulations#
+# #################################################
+# #################################################
+# #################################################
+#################################################
+#################################################
+#################################################
+#Start of actual analysis#
+Y_with_mean_presmooth<-read.csv('data/EEG_PCA_table_p900.csv')#
+#check for NAs#
+if(any(is.na(Y_with_mean_presmooth))) stop('error!! NAs!? Why!?') #stop will cause an error itself#
+#
+#get n and p#
+print(paste('dimension =',dim(Y_with_mean_presmooth)))#
+p<-dim(Y_with_mean_presmooth)[1]#
+n<-dim(Y_with_mean_presmooth)[2]#
+Y_with_mean_presmooth<-as.matrix(Y_with_mean_presmooth)#
+#
+###### Using Lowess#
+#try plotting smoothed version of Y instead, just to see it#
+Y_with_mean<-apply(Y_with_mean_presmooth,2,function(v) lowess(v,f=1/30)$y)#
+#
+matplot(Y_with_mean[,1:3],type='l')#
+matplot(Y_with_mean_presmooth[,1:3],type='l')#
+#
+###############
+#use mgcv instead?#
+library(mgcv)#
+Y_with_mean2<-apply(Y_with_mean_presmooth,2,function(x){#
+		xind<-1:length(x)#
+		fit <- gam(x ~ s(xind, bs="ps", k=50))#
+		newx <- predict(fit, newdata=data.frame(xind=xind))#
+ 		newx#
+})#
+#
+badInd<- c(352,104,146,223,353)#
+matplot(Y_with_mean[,badInd],type='l')#
+matplot(Y_with_mean2[,badInd],type='l')#
+matplot(Y_with_mean_presmooth[,badInd],type='l')#
+#
+range(Y_with_mean)#
+range(Y_with_mean2)#
+sum(Y_with_mean<0)#
+sum(Y_with_mean2<0)#
+sum(Y_with_mean>0)#
+sum(Y_with_mean2>0)#
+#
+###############
+#
+#demean Y_with_mean#
+mu<-rowMeans(Y_with_mean)#
+Y<-Y_with_mean%*%(diag(n)-matrix(1/n,n,n))#
+print(range(rowMeans(Y)))#
+print('demeaned')#
+plot(mu,type='l')#
+#get svd#
+svdtY<-fastSvdWide(t(Y)) #Sets Y=UDV'#
+V<-svdtY$v#
+D<-diag(svdtY$d)#
+d<-svdtY$d#
+U<-svdtY$u #
+UD<- U %*% D#
+DUt<-t(UD)#
+print('got SVD')#
+B<-2000#
+Khat<-3#
+#
+timeInHours<-(1:900)/120#
+timeInHours2<-cbind(timeInHours,timeInHours)#
+xTimeLab<-seq(0,7.5,by=.5)#
+xTimeLab[seq(2,16,by=2)]<-''#
+plotTimeLab<-function() axis(side=1,at=seq(0,7.5,by=.5),labels=xTimeLab)#
+#
+#look at the variance explained by each PC#
+#!!!! Need to adjust var explained if redoing simulations#
+numShow<-20#
+cbind(1:numShow,(d^2/sum(d^2))[1:numShow]) #var of each PC#
+cbind(1:numShow,(cumsum(d^2)/sum(d^2))[1:numShow]) # use the first 7 PCs in sim.#
+cbind(1:numShow,(d^2)[1:(Khat+5)]) # use the first 7 PCs in sim.#
+plot((d^2)[1:numShow])#
+##############
+####Plot PCA results - example subjects and empirical PCs.#
+#png(file=paste0('plots/',Sys.Date(),'EEG_PC_Sample_Plot.png'),width=700,height=750,pointsize=15)#
+par(mfrow=c(3,1),mar=c(1,5.5,3.5,1),cex.lab=1.6,cex.main=1.9,oma=c(5,0,0,0))#
+set.seed(10)#
+matplot(timeInHours,Y_with_mean[,sample(n,5)],type='l',col='darkgray',lty=1,main=expression(paste('Mean (',mu,') and Sample Data Curves')),ylab=expression(paste('Normalized ',delta,' Power')),xlab='',ylim=c(0,1),xaxt='n')#
+plotTimeLab()#
+lines(timeInHours,mu,type='l',lwd=3,col='blue')#
+legend('bottomright',c('Sample Curves','Mean Curve'),lty=1,col=c('darkgray','blue'),lwd=2,cex=1.3)#
+#
+plot(timeInHours,apply(Y,1,sd),main=expression('Pointwise Standard Deviation'),type='l',xlab='',xaxt='n',ylab='Std Dev.')#
+plotTimeLab()#
+#
+#PCcols<-c(brewer.pal(6,'YlGnBu')[c(6:2)],'gray')#
+PCcols<-brewer.pal(5,'Dark2')#
+#c.s.hcl(d^2/sum(d^2))[1:5])#
+#brewer.pal(7,'7-class RdYlBu')[c(1:3,6:7)]#
+matplot(timeInHours,V[,1:5],type='l',lty=1,col=PCcols,xlab='',ylab='',main=expression('First 5 Empirical PCs'),lwd=2,xaxt='n')#
+plotTimeLab()#
+mtext(text='Time in Hours',side=1,line=3,cex=1.3)#
+abline(h=0,lty=3)#
+legend('bottomright',paste0('PC',1:5),lty=1,col=PCcols,lwd=3,bg='transparent',cex=1.3)#
+#
+dev.off()#
+#######################
+##############
+####Plot PCA results - example subjects and empirical PCs.#
+#
+scoreTop<-list()#
+scoreBottom<-list()#
+for(k in 1:3){#
+	scoreTop[[k]]<-tail(order(DUt[k,]),20)#
+	scoreBottom[[k]]<-head(order(DUt[k,]),20)#
+}#
+#
+#png(file=paste0('plots/',Sys.Date(),'EEG_PC_score_people_examples.png'),width=800,height=730,pointsize=15)#
+par(mfrow=c(3,2),mar=c(3,5.5,3.5,1),cex.lab=1.6,cex.main=1.9,oma=c(3,0,0,0))#
+for(k in 1:3){#
+	plot(timeInHours,V[,k],type='l',ylim=c(-.10,.10),xaxt='n',xlab='',ylab='',main=paste0('Principal Component ',k),lwd=2)#
+	abline(h=0,lty=3)#
+	plotTimeLab()#
+	if(k==3) mtext('Time in Hours',side=1,line=2.5)#
+	matplot(timeInHours,Y_with_mean[,scoreTop[[k]]],type='l',col='#4575b4',lty=1,main='Example Subjects',ylab=expression(paste('Normalized ',delta,' Power')),xlab='',ylim=c(0,1),xaxt='n',lwd=.61,xaxt='n')#
+	matlines(timeInHours,Y_with_mean[,scoreBottom[[k]]],type='l',col='#b2182b',lty=1,main='High Score PC1',ylab=expression(paste('Normalized ',delta,' Power')),xlab='',ylim=c(0,1),xaxt='n',lwd=.61)#
+	plotTimeLab()#
+	if(k==3)mtext('Time in Hours',side=1,line=2.5)#
+	if(k==1)legend('bottomright',c('20 High Scores','20 Low Scores'),lwd=3,col=c('#4575b4','#b2182b'),cex=1.4,bg='white')#
+}#
+dev.off()#
+#dev.copy2pdf(file=paste0('plots/',Sys.Date(),'EEG_PC_score_people_examples.pdf'))#
+########################################
+####Plot PCA results - example subjects and empirical PCs.#
+#
+scoreTop<-list()#
+scoreBottom<-list()#
+for(k in 1:3){#
+	scoreTop[[k]]<-tail(order(DUt[k,]),20)#
+	scoreBottom[[k]]<-head(order(DUt[k,]),20)#
+}#
+#
+#png(file=paste0('plots/',Sys.Date(),'EEG_PC_score_people_examples.png'),width=800,height=730,pointsize=15)#
+par(mfrow=c(3,2),mar=c(3,5.5,3.5,1),cex.lab=1.6,cex.main=1.9,oma=c(3,0,0,0))#
+for(k in 1:3){#
+	plot(timeInHours,V[,k],type='l',ylim=c(-.10,.10),xaxt='n',xlab='',ylab='',main=paste0('Principal Component ',k),lwd=2)#
+	abline(h=0,lty=3)#
+	plotTimeLab()#
+	if(k==3) mtext('Time in Hours',side=1,line=2.5)#
+	matplot(timeInHours,Y_with_mean[,scoreTop[[k]]],type='l',col='#4575b4',lty=1,main='Example Subjects',ylab=expression(paste('Normalized ',delta,' Power')),xlab='',ylim=c(0,1),xaxt='n',lwd=.61,xaxt='n')#
+	matlines(timeInHours,Y_with_mean[,scoreBottom[[k]]],type='l',col='#b2182b',lty=1,main='High Score PC1',ylab=expression(paste('Normalized ',delta,' Power')),xlab='',ylim=c(0,1),xaxt='n',lwd=.61)#
+	plotTimeLab()#
+	if(k==3)mtext('Time in Hours',side=1,line=2.5)#
+	if(k==1)legend('bottomright',c('20 High Scores','20 Low Scores'),lwd=3,col=c('#4575b4','#b2182b'),cex=1.4,bg='white')#
+}#
+dev.off()#
+########################################
+##############
+####Cumulative Scree Plot#
+#Below, the "variance explained" is not scaled by n-1, but we only report proporiton of variance explained so it doesn't matter#
+#png(file=paste0('plots/',Sys.Date(),'_EEG+MRI_scree.png'),width=400,height=475,pointsize=17)#
+#
+#combine plot with MRI plot#
+YtYMRI<-readRDS('HD_data/RAVENS/YtY.rds')#
+dMRI<-sqrt(svd(YtYMRI)$d) * 0.9375 * 0.9375 * 1.5 /1000 #Christos' unit adjustment#
+plot( cumsum(d^2/sum(d^2))[1:20],pch=19,type='o',ylim=c(0,1),ylab='',xlab='',main='Variance Explained by PCs',cex.lab=1.6)#
+lines( cumsum(dMRI^2/sum(dMRI^2))[1:20],type='o')#
+mtext('Cumulative Proportion of \nVariance Explained',side=2,line=2)#
+mtext('Principal Component Index\n(Truncated)',side=1,line=3)#
+grid(col='darkgray',lty=2)#
+legend('bottomright',c('EEG Data','MRI Data'),pch=c(19,1),lty=1)#
+dev.off()#
+#dev.copy2pdf(file=paste0('plots/',Sys.Date(),'EEG_PC_Sample_Plot.pdf'))#
+##############
+#############
+#plot data reconstructions#
+#note, rows of DUt are scores, ordered by k. Cols are by n#
+muMat<-tcrossprod(mu,rep(1,n))#
+#
+#First get all the people with scores in the middle 90% for the first 5 PCs.#
+#
+#!!! remove in future iterations!#
+# subj2plot<-1:200#
+# scores2track<-5#
+# scoreIndByK<-matrix(NA,scores2track,n) #cols willl be people#
+# for(k in 1:scores2track){#
+# 	rangek<- quantile(DUt[k,],c(.05,.95))#
+# 	scoreIndByK[k,]<- (DUt[k,]>=rangek[1]) & (DUt[k,]<=rangek[2])#
+# }#
+# subj2plot<-which(apply(scoreIndByK,2,all))[1:100]#
+#futher subsampling by 100#
+# range(DUt[1,])#
+# range(DUt[1,subj2plot])#
+# sum(subj2plot)#
+#
+set.seed(0)#
+subj2plot<-sample(n,100,replace=FALSE)#
+#png(file=paste0('plots/',Sys.Date(),'EEG_Reconstruction.png'),width=750,height=1500,pointsize=20)#
+par(mfrow=c(4,1),mar=c(2,4.5,3.5,1),oma=c(3,1,1,1),cex.axis=1.4)#
+#
+matplot(timeInHours,(muMat+V[,1]%*%t(DUt[1,]))[,subj2plot],type='l',lwd=.51,lty=1,col="black",xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('EEG Data Approximation with Mean + PC1',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+lines(timeInHours,mu,col='blue',lwd=6)#
+legend('bottomleft',c(expression(paste(hat(y)[i])),expression(mu)),col=c('black','blue'),lty=1,cex=1.5 ,lwd=2.6)#
+#
+matplot(timeInHours,(muMat+V[,1:2]%*%DUt[1:2,])[,subj2plot],type='l',lty=1,col="black",lwd=.51,xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('EEG Data Approximation with Mean + PC1:PC2',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+#
+matplot(timeInHours,(muMat+V[,1:5]%*%DUt[1:5,])[,subj2plot],type='l',lty=1,col="black",lwd=.51,xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('EEG Data Approximation with Mean + PC1:PC5',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+#
+matplot(timeInHours,Y_with_mean[,subj2plot],type='l',lty=1,col="black",lwd=.51,xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('Full Rank EEG Data',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+mtext('Time in Hours',side=1,line=2.5,cex=1.3)#
+#
+dev.off()#
+#dev.copy2pdf(file=paste0('plots/',Sys.Date(),'EEG_Reconstruction.pdf'))#
+#SLIDE SHOW VERSION#
+#png(file=paste0('plots/',Sys.Date(),'EEG_Reconstruction_slides.png'),width=750,height=1500,pointsize=20)#
+par(mfcol=c(2,2),mar=c(2,4.5,3.5,1),oma=c(3,1,1,1),cex.axis=1.4)#
+#
+matplot(timeInHours,(muMat+V[,1]%*%t(DUt[,1]))[,subj2plot],type='l',lwd=.51,lty=1,col="black",xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('EEG Data Approximation with Mean + PC1',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+lines(timeInHours,mu,col='#7fcdbb',lwd=3)#
+legend('bottomleft',c(expression(paste(hat(y)[i])),expression(mu)),col=c('black','#7fcdbb'),lty=1,cex=1.5 ,lwd=2.6)#
+#
+matplot(timeInHours,(muMat+V[,1:2]%*%DUt[1:2,])[,subj2plot],type='l',lty=1,col="black",lwd=.51,xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('EEG Data Approximation with Mean + PC1:PC2',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+mtext('Time in Hours',side=1,line=2.5,cex=1.3)#
+#
+matplot(timeInHours,(muMat+V[,1:5]%*%DUt[1:5,])[,subj2plot],type='l',lty=1,col="black",lwd=.51,xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('EEG Data Approximation with Mean + PC1:PC5',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+#
+matplot(timeInHours,Y_with_mean[,subj2plot],type='l',lty=1,col="black",lwd=.51,xlab='',ylab='',ylim=c(0,1),cex.axis=1.4,xaxt='n')#
+plotTimeLab()#
+mtext('Full Rank EEG Data',cex=1.3,line=.5)#
+mtext(expression(paste('Normalized ',delta,' Power')),side=2,line=2.5,cex=1.3)#
+mtext('Time in Hours',side=1,line=2.5,cex=1.3)#
+#
+dev.off()#
+#dev.copy2pdf(file=paste0('plots/',Sys.Date(),'EEG_Reconstruction.pdf'))#
+##############
+hist(UD[,1])#
+hist(UD[,2])#
+hist(UD[,3])#
+qqnorm(scale(UD[,1])); abline(0,1)#
+qqnorm(scale(UD[,2])); abline(0,1)#
+qqnorm(scale(UD[,3])); abline(0,1)#
+qqnorm(scale(tcrossprod(V[,Khat:n],UD[,Khat:n])[10,])); abline(0,1) #one column of residuals#
+#
+#image(var(UD[,Khat:n]%*%t(V[,Khat:n]))) #seems to be some corr in the residuals, but we'll just model them with independent noise #
+var(UD[,Khat:n]%*%t(V[,Khat:n]))[1:4,1:4]#
+#
+matplot(V[,1:4],type='l')#
+lines(mu / sqrt(sum(mu^2)))#
+#
+set.seed(1)#
+bInds<-array(NA,dim=c(B,n)) #bootstrap indeces#
+for(b in 1:B) bInds[b,]<-sample(n,replace=TRUE) #
+#
+# system.time({#
+# bootLoopOutput <-bootSvd(UD=UD,Khat=Khat,bInds=bInds,warning_type='silent',talk=TRUE)#
+# }) #500 sec#
+#
+#saveRDS(bootLoopOutput,file='data/EEG_As.rds')#
+bootLoopOutput<-readRDS(file='data/EEG_As.rds')#
+#
+As<-bootLoopOutput$As#
+ds<-bootLoopOutput$ds#
+system.time({#
+Vbs<-lapply(1:B, FUN=function(b)  V %*% As[[b]])#
+}) #3.5 sec !!! can also use mclapply here !!!#
+#
+# eigenvalue distribution#
+# takes as input #
+	# ds = list of B bootstrap d vectors (each of which is n-length). #
+	# d = empirical d vector from svd(Y) (d^2/(n-1) = eigenvalue of cov matrix.#
+exploreEigenValueDist<-function(ds,d,B=length(ds),Khat=3,n=length(ds[[1]])){#
+	#str(ds)#
+	eigenvalMat<-matrix(NA,B,Khat)#
+	for(b in 1:B) eigenvalMat[b,]<-ds[[b]][1:Khat]^2/(n-1) #square to get eigenvalue, then adjust to get eigenvector of covariance matrix (with (n-1) term)#
+	dsl<-melt(eigenvalMat)#
+	library(reshape)#
+	dsl<-melt(eigenvalMat)#
+	colnames(dsl)<-c('b','index','eigenvalue')#
+	head(dsl)#
+	tail(dsl)#
+#
+	dGG<-data.frame(cbind(1:Khat),d[1:Khat]^2/(n-1))#
+	names(dGG)<-c('index','d')#
+	#percent bias:#
+	dGGbootMean<-data.frame(cbind(1:Khat),colMeans(eigenvalMat)[1:Khat])#
+	names(dGGbootMean)<-c('index','d')#
+	print((dGGbootMean-dGG)/dGG)#
+#
+	#Plot for paper#
+	return(#
+		ggplot()+geom_violin(data=dsl, aes(x=factor(index),y=eigenvalue))+geom_point(data=dGG, aes(x=index,y=d),pch=3)+labs(y='Bootstrap Distribution',x='Eigenvalue Index')#
+	)#
+#
+}#
+#input d, get out covariance eigenvalue#
+#pdf(file=paste0('plots/',Sys.Date(),'_EEG_eigenvalue_boot_dist.pdf'),height=4,width=3)#
+exploreEigenValueDist(ds,d) + labs(title='EEG Dataset')#
+dev.off()#
+#
+dsMRI_unscaled<-readRDS('HD_data/RAVENS/bootDist.rds')$ds#
+dsMRI<-lapply(dsMRI_unscaled,function(x) x*0.9375 * 0.9375 * 1.5 / 1000 ) #Christos' unit adjustment#
+#
+#pdf(file=paste0('plots/',Sys.Date(),'_MRI_eigenvalue_boot_dist.pdf'),height=4,width=3.3)#
+exploreEigenValueDist(dsMRI,dMRI)+ labs(title='MRI Dataset')#
+dev.off()
+pal <- function(col, border = "light gray", ...){#
+	#A function for plotting color palettes#
+	#Copy pasted from HCL-Based Color Palettes in R (Vignette)#
+	#http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf#
+	 n <- length(col)#
+	 plot(0, 0, type="n", xlim = c(0, 1), ylim = c(0, 1),#
+	 axes = FALSE, xlab = "", ylab = "", ...)#
+	 rect(0:(n-1)/n, 0, 1:n/n, 1, col = col, border = border)#
+ }#
+#
+col2projector<-function(col='red'){#
+	require(grDevices)#
+	rgbCol<-col2rgb(col=col, alpha = FALSE)#
+	rgbCol['red',]<-0#
+	colMat2rgb<-function(x){#
+	 rgb(red=x[1], green=x[2], blue=x[3], maxColorValue = 255) #
+	}#
+	outCol<-apply(rgbCol,2,colMat2rgb)#
+	return(outCol)#
+}
+col2rgBlind<-function(col='red'){#
+	require(grDevices)#
+	rgbCol<-col2rgb(col=col, alpha = FALSE)#
+	rgbCol['red',]<-127#
+	colMat2rgb<-function(x){#
+	 rgb(red=x[1], green=x[2], blue=x[3], maxColorValue = 255) #
+	}#
+	outCol<-apply(rgbCol,2,colMat2rgb)#
+	return(outCol)#
+}#
+#
+library(colorspace)#
+myCol<-rainbow_hcl(30,l=50)#
+pal(myCol)#
+myCol<-'red'#
+yourCol<-col2projector(myCol)#
+rgBlindCol<-col2rgBlind(myCol)
+pal(myCol)
+col2projector(myCol)
+myCol<-rainbow_hcl(30,l=50)
+pal(myCol)
+yourCol<-col2projector(myCol)
+rgBlindCol<-col2rgBlind(myCol)
+pal(myCol)
+pal(yourCol)
+pal(rgBlindCol)
+pal(myCol)
+myCol<-'red'
+projectorCol<-col2projector(myCol)
+rgBlindCol<-col2rgBlind(myCol)
+pal(myCol)
+par(mfrow=c(3,1))
+pal(myCol)
+pal(projectorCol)
+pal(rgBlindCol)
+pal(myCol,main='Reference colors')
+pal(projectorCol,main='Colors on projector'))
+pal(rgBlindCol,main='Colors with colorblindness'))
+pal(myCol,main='Reference colors')
+pal(projectorCol,main='Colors on projector')
+library(hdboot)
+?bootSvd
+Check the help#
+library(hdboot)#
+help(package=hdboot)
+ls()
+bootSvd
+EEG_PCA
+data(EEG_PCA)
+library(hdboot)
+ls()
+EEG_mu
+EEG_sigma
+EEG_score_var
+help(package=hdboot)
+library(hdboot)
+library(hdboot)#
+?bootSvd
+create face image dataset#
+library(hdboot)#
+library(aaronjfisher)#
+#
+library(colorspace)#
+library(jpeg)#
+library(ggplot2)#
+library(reshape)#
+library(plotrix)
+|___/ #
+setwd('/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/hd-free-online-data/Stirling_jpg')#
+N<-length(dir())#
+view<-'v1'#
+#
+dims<-array(NA,dim=c(N,2))#
+for(i in 1:N){#
+	if(!grepl(view,dir()[i])) next #skip faces that aren't facing forward#
+	thisFace<-readJPEG(dir()[i])[,,1] #usually it's a 3d array because they store RG and B, but here it's all grey, so all 3 of the third dimensions are the same#
+	dims[i,]<-dim(thisFace)#
+}#
+n<-sum(!is.na(dims[,1]))#
+range(dims[,1],na.rm=TRUE)#
+range(dims[,2],na.rm=TRUE)#
+dimPic<-apply(dims,2,function(x) min(x,na.rm=TRUE))#
+#
+colPC<-rev(diverge_hcl(100))#
+colBW<-rev(sequential_hcl(n, h = 260, c = c(0, 0)))#
+colSE<-rev(sequential_hcl(n, h = 110))#
+faces3d<-array(NA,dim=c(dimPic,n))#
+fi<-0#
+for(i in 1:N){#
+	if(!grepl(view,dir()[i])) next #skip faces that aren't facing forward#
+	thisFace<-readJPEG(dir()[i])[1:dimPic[1],1:dimPic[2],1] #
+	fi<-fi+1 #not#
+	faces3d[,,fi]<-thisFace#
+}#
+os(faces3d)#
+par(mfrow=c(2,3),mar=c(2,2,2,2))#
+for(i in 1:6) image0(1-faces3d[,,i])#
+facesMat<-array(NA,dim=c(prod(dimPic),n))#
+for(i in 1:n){#
+	facesMat[,i]<-c(faces3d[,,i])#
+}
+setwd('/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/hd-free-online-data')#
+#
+#to reconstruct from a vector, it's simple:#
+get2dFace<-function(vec) array(vec,dim=dimPic)#
+dim(facesMat) #p=43621#
+#
+Y<-t(scale(t(facesMat),scale=FALSE,center=TRUE))#
+image0(get2dFace(-Y[,22]),pal_vec=colPC) #demeaned image#
+#
+#estimate how much time it would take with standard methods, not counting var step#
+K<-3#
+# some representative face indeces: 10:12 61:66 74:75 79:81#
+#png(file=paste0(Sys.Date(),'_stirling_faces.png'),width=700,height=500)#
+par(mfrow=c(2,K),mar=c(2,2,2,.4))#
+for(face in c(10:12,61:63)) image0(get2dFace(1-facesMat[,face]),pal_vec=colBW,pal_type='seq')#
+#dev.off()
+warnings()
+for(face in c(10:12,61:63)) image0(get2dFace(1-facesMat[,face]),col=colBW)
+par(mfrow=c(2,K),mar=c(2,2,2,.4))#
+for(face in c(10:12,61:63)) image0(get2dFace(1-facesMat[,face]),col=colBW)#
+#dev.off()
+timer<-c()
+dim(Y)
+timer['initial_svd']<-system.time({#
+svdYt<-fastSvd(t(Y))#
+})['elapsed']
+plot(d[1:20]^2)
+plot(svdYt$d[1:20]^2)
+system.time()
+b
+dim(svdYt$v)
+timer['bootstrap_PCA']<-system.time({#
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')#
+})['elapsed']
+bootSvd
+bootSvd<-function(Y,V=NULL,d=NULL,U=NULL,B=50,K,output='HD_moments',talk=TRUE,bInds=NULL,percentiles=c(.025,.975),centerScores=TRUE,mc.cores=1){#
+#
+	#get initial SVD, if needed#
+	notfullV<-TRUE#
+	if(!is.null(V)) if(dim(V)[2] == min(dim(Y))) notfullV<-FALSE#
+	if(any(is.null(V),is.null(d),is.null(U))|notfullV){#
+		#convert Y to a wide matrix, for ease of coding with svd()#
+		if(dim(Y)[1]>dim(Y)[2]) Y<-t(Y)#
+		if(talk) cat('Getting initial svd(Y)...')#
+		svdY<-fastSvd(Y)#
+		V<-svdY$v#
+		U<-svdY$u#
+		d<-svdY$d#
+		rm('svdY')#
+		#center sample#
+		U<-scale(U,center=TRUE,scale=FALSE)#
+	}#
+	n<-dim(U)[1]#
+	p<-dim(V)[1]#
+	DUt<- tcrossprod(diag(d),U)#
+#
+	#if desired, use their bInds matrix#
+	if(is.null(bInds)) bInds<-genBootIndeces(B=B,n=dim(DUt)[2])#
+	if(!is.null(bInds)) B<-dim(bInds)[1]#
+#
+	if(talk) cat('...Calculating n-dimensional bootstrap SVDs...')#
+	bootSvd_LD_output<-bootSvd_LD(DUt=DUt,bInds=bInds,K=K,talk=talk,centerScores=centerScores)#
+	AsByB<-bootSvd_LD_output$As#
+	out_contents<-list()#
+#
+	#######
+	#always include#
+	out_contents[['LD_moments']]<-getMomentsAndMomentCI(AsByB,diag(n),talk=FALSE)#
+#
+	AsByK<-reindexPCsByK(PCsByB=AsByB)#
+	out_contents[['LD_percentiles']]<-lapply(AsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))#
+		})#
+#
+	#########
+	if('initial_SVD' %in% output | output == 'all'){#
+		out_contents[['initial_SVD']]<-list(V=V,d=d,U=U)#
+	}#
+	if('HD_moments' %in% output | output == 'all'){#
+		out_contents[['HD_moments']]<-getMomentsAndMomentCI(AsByB,V,talk=talk)#
+	}#
+#
+	##### Using Full HD Distribution #####
+	if('full_HD_PC_dist' %in% output| 'HD_percentiles' %in% output | output == 'all'){#
+#
+		if(talk) cat('...Calculating HD Bootstrap PC distribution...')#
+		VsByK<-reindexPCsByK(As2Vs(AsByB,V=V,mc.cores=mc.cores))#
+#
+		if('full_HD_PC_dist' %in% output | output == 'all'){#
+			out_contents[['VsByK']]<-VsByK#
+		}	#
+		if('HD_percentiles' %in% output | output == 'all'){#
+			out_contents[['HD_percentiles']]<-lapply(VsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))})#
+		}#
+	}#
+	###################################
+#
+	if('full_LD_PC_dist' %in% output | output == 'all'){#
+		out_contents[['AsByK']]<-reindexPCsByK(AsByB)#
+	}#
+	if('d_dist' %in% output | output == 'all'){#
+		out_contents[['d_dist']]<-bootSvd_LD_output$ds#
+	}#
+	if('U_dist' %in% output | output == 'all'){#
+		out_contents[['U_dist']]<-bootSvd_LD_output$Us#
+	}#
+#
+	return(out_contents)#
+}#
+#
+#' Quickly calculates bootstrap PCA results (wrapper for bootSvd)#
+#' @param ... passed to \code{\link{bootSvd}}#
+#' @return bootSvd(...)#
+#' Everything is passed to \code{\link{bootSvd}}#
+bootPCA<-function(...) bootSvd(...)#
+#!!!!!! Demean each sample??#
+#      _                _                                  _   #
+#     | |              | |                                | |  #
+#   __| | _____   _____| | ___  _ __  _ __ ___   ___ _ __ | |_ #
+#  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \| '_ ` _ \ / _ \ '_ \| __|#
+# | (_| |  __/\ V /  __/ | (_) | |_) | | | | | |  __/ | | | |_ #
+#  \__,_|\___| \_/ \___|_|\___/| .__/|_| |_| |_|\___|_| |_|\__|#
+#                              | |                             #
+#                              |_|                             #
+# # Currently used in simulations but not main EEG analysis?#
+# # Get distance in terms of Frobenius norm#
+# #Beran Style Intervals#
+# #just |v'v_b| and ||V'V_b|| (for subspace)#
+# # The resulting CRs will be LOWER BOUNDS for |V'V_b|#
+# getFrobDist<-function(AtB=NULL,A,B){#
+# 	if(is.null(AtB)) AtB<-crossprod(A,B)#
+# 	return(sqrt(sum(AtB^2)))#
+# }#
+#
+# #traditional bootstrap#
+# bootSvd_LDTraditional<-function(Y,bInds,K,warning_type='silent',matchSign=TRUE,talk=FALSE){#
+# 	B<-dim(bInds)[1]#
+# 	n<-dim(Y)[2]#
+#
+# 	#Objects to store results#
+# 	#Put B in rows#
+# 	dbs<-#
+# 	Ubs<-#
+# 	Vbs<-list()#
+#
+# 	V<-fastSvd(t(Y),nv=K,warning_type=warning_type)$v#
+#
+# 	#Do SVDs#
+# 	if(talk) pb<-txtProgressBar(min = 1, max = B,  char = "=", style = 3)#
+# 	timeSVD<-system.time({#
+# 	for(b in 1:B){		#
+# 		svdYbt<-fastSvd(t(Y[,bInds[b,]]),nv=K,warning_type=warning_type) #Sets Y=UDV'#
+# 		Vb<-svdYbt$v #already has K cols#
+# 		dbs[[b]]<-svdYbt$d#
+# 		Ub<-svdYbt$u[,1:K]#
+# 		#check sign#
+# 		if(matchSign){#
+# 			for(k in 1:K){#
+# 				if(crossprod(V[,k],Vb[,k])<0) { Vb[,k]<- -Vb[,k]; Ub[,k]<- -Ub[,k]}#
+# 		}}		#
+# 		Vbs[[b]]<-Vb#
+# 		Ubs[[b]]<-Ub#
+#
+# 		if(talk) setTxtProgressBar(pb,b)#
+# 	}#
+# 	})#
+#
+# 	return(list(Vbs=Vbs,dbs=dbs,Ubs=Ubs))#
+# }
+timer['bootstrap_PCA']<-system.time({#
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')#
+})['elapsed']
+bootSvd<-function(Y,V=NULL,d=NULL,U=NULL,B=50,K,output='HD_moments',talk=TRUE,bInds=NULL,percentiles=c(.025,.975),centerScores=TRUE,mc.cores=1){#
+#
+	#get initial SVD, if needed#
+	notfullV<-TRUE#
+	if(!is.null(V)) if(dim(V)[2] == min(dim(Y))) notfullV<-FALSE#
+	if(any(is.null(V),is.null(d),is.null(U))|notfullV){#
+		#convert Y to a wide matrix, for ease of coding with svd()#
+		if(dim(Y)[1]>dim(Y)[2]) Y<-t(Y)#
+		if(talk) cat('Getting initial svd(Y)...')#
+		svdY<-fastSvd(Y)#
+		V<-svdY$v#
+		U<-svdY$u#
+		d<-svdY$d#
+		rm('svdY')#
+		#center sample#
+		U<-scale(U,center=TRUE,scale=FALSE)#
+	}#
+	n<-dim(U)[1]#
+	p<-dim(V)[1]#
+	DUt<- tcrossprod(diag(d),U)#
+#
+	#if desired, use their bInds matrix#
+	if(is.null(bInds)) bInds<-genBootIndeces(B=B,n=dim(DUt)[2])#
+	if(!is.null(bInds)) B<-dim(bInds)[1]#
+#
+	if(talk) cat('...Calculating n-dimensional bootstrap SVDs...')#
+	bootSvd_LD_output<-bootSvd_LD(DUt=DUt,bInds=bInds,K=K,talk=talk,centerScores=centerScores)#
+	AsByB<-bootSvd_LD_output$As#
+	out_contents<-list()#
+#
+	#######
+	#always include#
+	out_contents[['LD_moments']]<-getMomentsAndMomentCI(AsByB,diag(n),talk=FALSE)#
+#
+	AsByK<-reindexPCsByK(PCsByB=AsByB)#
+	out_contents[['LD_percentiles']]<-lapply(AsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))#
+		})#
+#
+	#########
+	if('initial_SVD' %in% output | output == 'all'){#
+		out_contents[['initial_SVD']]<-list(V=V,d=d,U=U)#
+	}#
+	if('HD_moments' %in% output | output == 'all'){#
+		out_contents[['HD_moments']]<-getMomentsAndMomentCI(AsByB,V,talk=talk)#
+	}#
+#
+	##### Using Full HD Distribution #####
+	if('full_HD_PC_dist' %in% output| 'HD_percentiles' %in% output | output == 'all'){#
+#
+		if(talk) cat('...Calculating HD Bootstrap PC distribution...')#
+		VsByK<-reindexPCsByK(As2Vs(AsByB,V=V,mc.cores=mc.cores))#
+#
+		if('full_HD_PC_dist' %in% output | output == 'all'){#
+			out_contents[['VsByK']]<-VsByK#
+		}	#
+		if('HD_percentiles' %in% output | output == 'all'){#
+			out_contents[['HD_percentiles']]<-lapply(VsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))})#
+		}#
+	}#
+	###################################
+#
+	if('full_LD_PC_dist' %in% output | output == 'all'){#
+		out_contents[['AsByK']]<-reindexPCsByK(AsByB)#
+	}#
+	if('d_dist' %in% output | output == 'all'){#
+		out_contents[['d_dist']]<-bootSvd_LD_output$ds#
+	}#
+	if('U_dist' %in% output | output == 'all'){#
+		out_contents[['U_dist']]<-bootSvd_LD_output$Us#
+	}#
+#
+	return(out_contents)#
+}
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+Create the package:#
+library('roxygen2')#
+library('devtools')#
+#set the working directory#
+setwd("/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/package")#
+#create('hdboot') #only do this once#
+## Create the documentation fresh#
+document("hdboot", clean=TRUE)#
+## Install the package#
+install("hdboot")#
+## Check the help#
+library(hdboot)
+rm(list=ls())
+Create the package:#
+library('roxygen2')#
+library('devtools')#
+#set the working directory#
+setwd("/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/package")#
+#create('hdboot') #only do this once#
+## Create the documentation fresh#
+document("hdboot", clean=TRUE)#
+## Install the package#
+install("hdboot")#
+## Check the help#
+library(hdboot)
+_   _      _ _             #
+#     | | (_)    | (_)            #
+#  ___| |_ _ _ __| |_ _ __   __ _ #
+# / __| __| | '__| | | '_ \ / _` |#
+# \__ \ |_| | |  | | | | | | (_| |#
+# |___/\__|_|_|  |_|_|_| |_|\__, |#
+#                            __/ |#
+#                           |___/ #
+setwd('/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/hd-free-online-data/Stirling_jpg')#
+N<-length(dir())#
+view<-'v1'#
+#
+dims<-array(NA,dim=c(N,2))#
+for(i in 1:N){#
+	if(!grepl(view,dir()[i])) next #skip faces that aren't facing forward#
+	thisFace<-readJPEG(dir()[i])[,,1] #usually it's a 3d array because they store RG and B, but here it's all grey, so all 3 of the third dimensions are the same#
+	dims[i,]<-dim(thisFace)#
+}#
+n<-sum(!is.na(dims[,1]))#
+range(dims[,1],na.rm=TRUE)#
+range(dims[,2],na.rm=TRUE)#
+dimPic<-apply(dims,2,function(x) min(x,na.rm=TRUE))#
+#
+colPC<-rev(diverge_hcl(100))#
+colBW<-rev(sequential_hcl(n, h = 260, c = c(0, 0)))#
+colSE<-rev(sequential_hcl(n, h = 110))#
+faces3d<-array(NA,dim=c(dimPic,n))#
+fi<-0#
+for(i in 1:N){#
+	if(!grepl(view,dir()[i])) next #skip faces that aren't facing forward#
+	thisFace<-readJPEG(dir()[i])[1:dimPic[1],1:dimPic[2],1] #
+	fi<-fi+1 #not#
+	faces3d[,,fi]<-thisFace#
+}#
+os(faces3d)#
+par(mfrow=c(2,3),mar=c(2,2,2,2))#
+for(i in 1:6) image0(1-faces3d[,,i])#
+facesMat<-array(NA,dim=c(prod(dimPic),n))#
+for(i in 1:n){#
+	facesMat[,i]<-c(faces3d[,,i])#
+}#
+# #              _                                  #
+# #             (_)                                 #
+# #  _ __   __ _ _ _ __     ___ _ __ ___  _ __  ___ #
+# # | '_ \ / _` | | '_ \   / __| '__/ _ \| '_ \/ __|#
+# # | |_) | (_| | | | | | | (__| | | (_) | |_) \__ \#
+# # | .__/ \__,_|_|_| |_|  \___|_|  \___/| .__/|___/#
+# # | |                                  | |        #
+# # |_|                                  |_|        #
+# ##
+#
+# setwd('/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/hd-free-online-data/pain_crops')#
+# n<-length(dir())#
+# firstPic<-readJPEG(dir()[1])#
+# all(firstPic[,,1]==firstPic[,,2])# since it's black and white!#
+# image0(1-firstPic[,,1])#
+# dimPic<-dim(firstPic)[1:2]#
+#
+# faces3d<-array(NA,dim=c(dimPic,n))#
+# for(i in 1:n){#
+# 	faces3d[,,i]<-readJPEG(dir()[i])[,,3] #usually it's a 3d array because they store RG and B, but here it's all grey, so all 3 of the third dimensions are the same#
+# }#
+# os(faces3d)#
+# par(mfrow=c(2,3),mar=c(2,2,2,2))#
+# for(i in 1:6) image0(1-faces3d[,,i],autoLegent=TRUE)#
+#
+# facesMat<-array(NA,dim=c(241*181,n))#
+# for(i in 1:n){#
+# 	facesMat[,i]<-c(faces3d[,,i])#
+# }#
+# #######################
+# ______  _____   ___  #
+# | ___ \/  __ \ / _ \ #
+# | |_/ /| /  \// /_\ \#
+# |  __/ | |    |  _  |#
+# | |    | \__/\| | | |#
+# \_|     \____/\_| |_/#
+setwd('/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/hd-free-online-data')#
+#
+#to reconstruct from a vector, it's simple:#
+get2dFace<-function(vec) array(vec,dim=dimPic)#
+dim(facesMat) #p=43621#
+#
+Y<-t(scale(t(facesMat),scale=FALSE,center=TRUE))#
+image0(get2dFace(-Y[,22]),pal_vec=colPC) #demeaned image#
+#
+#estimate how much time it would take with standard methods, not counting var step#
+K<-3#
+# some representative face indeces: 10:12 61:66 74:75 79:81#
+#png(file=paste0(Sys.Date(),'_stirling_faces.png'),width=700,height=500)#
+par(mfrow=c(2,K),mar=c(2,2,2,.4))#
+for(face in c(10:12,61:63)) image0(get2dFace(1-facesMat[,face]),col=colBW)#
+#dev.off()#
+#
+# par(mfrow=c(2,K),mar=c(2,2,2,.4))#
+# for(face in 21+1:K) image0(get2dFace(Y[,face]),col=colPC)#
+#
+# system.time({#
+# for(b in 1:10) svdYt<-fastSvdWide(t(Y),nv=K)#
+# })*100/60 #approx 17 min for view='v1'#
+#
+timer<-c()#
+#
+timer['initial_svd']<-system.time({#
+svdYt<-fastSvd(t(Y))#
+})['elapsed']
+timer
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+debug(bootSvd)
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+lapply(svdYt,dim)
+rm(bootSvd
+)
+)
+bootSvd<-function(Y,V=NULL,d=NULL,U=NULL,B=50,K,output='HD_moments',talk=TRUE,bInds=NULL,percentiles=c(.025,.975),centerScores=TRUE,mc.cores=1){#
+#
+	#get initial SVD, if needed#
+	notfullV<-TRUE#
+	if(!is.null(V)) if(dim(V)[2] == dim(U)[2]) notfullV<-FALSE#
+	if(any(is.null(V),is.null(d),is.null(U))){#
+		#convert Y to a wide matrix, for ease of coding with svd()#
+		if(dim(Y)[1]>dim(Y)[2]) Y<-t(Y)#
+		if(talk) cat('Getting initial svd(Y)...')#
+		svdY<-fastSvd(Y)#
+		V<-svdY$v#
+		U<-svdY$u#
+		d<-svdY$d#
+		rm('svdY')#
+		#center sample#
+		U<-scale(U,center=TRUE,scale=FALSE)#
+	}#
+	n<-dim(U)[1]#
+	p<-dim(V)[1]#
+	DUt<- tcrossprod(diag(d),U)#
+#
+	#if desired, use their bInds matrix#
+	if(is.null(bInds)) bInds<-genBootIndeces(B=B,n=dim(DUt)[2])#
+	if(!is.null(bInds)) B<-dim(bInds)[1]#
+#
+	if(talk) cat('...Calculating n-dimensional bootstrap SVDs...')#
+	bootSvd_LD_output<-bootSvd_LD(DUt=DUt,bInds=bInds,K=K,talk=talk,centerScores=centerScores)#
+	AsByB<-bootSvd_LD_output$As#
+	out_contents<-list()#
+#
+	#######
+	#always include#
+	out_contents[['LD_moments']]<-getMomentsAndMomentCI(AsByB,diag(n),talk=FALSE)#
+#
+	AsByK<-reindexPCsByK(PCsByB=AsByB)#
+	out_contents[['LD_percentiles']]<-lapply(AsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))#
+		})#
+#
+	#########
+	if('initial_SVD' %in% output | output == 'all'){#
+		out_contents[['initial_SVD']]<-list(V=V,d=d,U=U)#
+	}#
+	if('HD_moments' %in% output | output == 'all'){#
+		out_contents[['HD_moments']]<-getMomentsAndMomentCI(AsByB,V,talk=talk)#
+	}#
+#
+	##### Using Full HD Distribution #####
+	if('full_HD_PC_dist' %in% output| 'HD_percentiles' %in% output | output == 'all'){#
+#
+		if(talk) cat('...Calculating HD Bootstrap PC distribution...')#
+		VsByK<-reindexPCsByK(As2Vs(AsByB,V=V,mc.cores=mc.cores))#
+#
+		if('full_HD_PC_dist' %in% output | output == 'all'){#
+			out_contents[['VsByK']]<-VsByK#
+		}	#
+		if('HD_percentiles' %in% output | output == 'all'){#
+			out_contents[['HD_percentiles']]<-lapply(VsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))})#
+		}#
+	}#
+	###################################
+#
+	if('full_LD_PC_dist' %in% output | output == 'all'){#
+		out_contents[['AsByK']]<-reindexPCsByK(AsByB)#
+	}#
+	if('d_dist' %in% output | output == 'all'){#
+		out_contents[['d_dist']]<-bootSvd_LD_output$ds#
+	}#
+	if('U_dist' %in% output | output == 'all'){#
+		out_contents[['U_dist']]<-bootSvd_LD_output$Us#
+	}#
+#
+	return(out_contents)#
+}#
+#
+#' Quickly calculates bootstrap PCA results (wrapper for bootSvd)#
+#' @param ... passed to \code{\link{bootSvd}}#
+#' @return bootSvd(...)#
+#' Everything is passed to \code{\link{bootSvd}}#
+bootPCA<-function(...) bootSvd(...)#
+#!!!!!! Demean each sample??#
+#      _                _                                  _   #
+#     | |              | |                                | |  #
+#   __| | _____   _____| | ___  _ __  _ __ ___   ___ _ __ | |_ #
+#  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \| '_ ` _ \ / _ \ '_ \| __|#
+# | (_| |  __/\ V /  __/ | (_) | |_) | | | | | |  __/ | | | |_ #
+#  \__,_|\___| \_/ \___|_|\___/| .__/|_| |_| |_|\___|_| |_|\__|#
+#                              | |                             #
+#                              |_|                             #
+# # Currently used in simulations but not main EEG analysis?#
+# # Get distance in terms of Frobenius norm#
+# #Beran Style Intervals#
+# #just |v'v_b| and ||V'V_b|| (for subspace)#
+# # The resulting CRs will be LOWER BOUNDS for |V'V_b|#
+# getFrobDist<-function(AtB=NULL,A,B){#
+# 	if(is.null(AtB)) AtB<-crossprod(A,B)#
+# 	return(sqrt(sum(AtB^2)))#
+# }#
+#
+# #traditional bootstrap#
+# bootSvd_LDTraditional<-function(Y,bInds,K,warning_type='silent',matchSign=TRUE,talk=FALSE){#
+# 	B<-dim(bInds)[1]#
+# 	n<-dim(Y)[2]#
+#
+# 	#Objects to store results#
+# 	#Put B in rows#
+# 	dbs<-#
+# 	Ubs<-#
+# 	Vbs<-list()#
+#
+# 	V<-fastSvd(t(Y),nv=K,warning_type=warning_type)$v#
+#
+# 	#Do SVDs#
+# 	if(talk) pb<-txtProgressBar(min = 1, max = B,  char = "=", style = 3)#
+# 	timeSVD<-system.time({#
+# 	for(b in 1:B){		#
+# 		svdYbt<-fastSvd(t(Y[,bInds[b,]]),nv=K,warning_type=warning_type) #Sets Y=UDV'#
+# 		Vb<-svdYbt$v #already has K cols#
+# 		dbs[[b]]<-svdYbt$d#
+# 		Ub<-svdYbt$u[,1:K]#
+# 		#check sign#
+# 		if(matchSign){#
+# 			for(k in 1:K){#
+# 				if(crossprod(V[,k],Vb[,k])<0) { Vb[,k]<- -Vb[,k]; Ub[,k]<- -Ub[,k]}#
+# 		}}		#
+# 		Vbs[[b]]<-Vb#
+# 		Ubs[[b]]<-Ub#
+#
+# 		if(talk) setTxtProgressBar(pb,b)#
+# 	}#
+# 	})#
+#
+# 	return(list(Vbs=Vbs,dbs=dbs,Ubs=Ubs))#
+# }
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+debug(bootSvd)
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+p
+n
+print(n)
+dim(bInds)
+B
+B
+Q
+bootSvd<-function(Y,V=NULL,d=NULL,U=NULL,B=50,K,output='HD_moments',talk=TRUE,bInds=NULL,percentiles=c(.025,.975),centerScores=TRUE,mc.cores=1){#
+#
+	#get initial SVD, if needed#
+	notfullV<-TRUE#
+	if(!is.null(V)) if(dim(V)[2] == dim(U)[2]) notfullV<-FALSE#
+	if(any(is.null(V),is.null(d),is.null(U))){#
+		#convert Y to a wide matrix, for ease of coding with svd()#
+		if(dim(Y)[1]>dim(Y)[2]) Y<-t(Y)#
+		if(talk) cat('Getting initial svd(Y)...')#
+		svdY<-fastSvd(Y)#
+		V<-svdY$v#
+		U<-svdY$u#
+		d<-svdY$d#
+		rm('svdY')#
+		#center sample#
+		U<-scale(U,center=TRUE,scale=FALSE)#
+	}#
+	n<-dim(U)[1]#
+	p<-dim(V)[1]#
+	DUt<- tcrossprod(diag(d),U)#
+#
+	#if desired, use their bInds matrix#
+	if(!is.null(bInds)) B<-dim(bInds)[1]#
+	if(is.null(bInds)) bInds<-genBootIndeces(B=B,n=dim(DUt)[2])#
+#
+	if(talk) cat('...Calculating n-dimensional bootstrap SVDs...')#
+	bootSvd_LD_output<-bootSvd_LD(DUt=DUt,bInds=bInds,K=K,talk=talk,centerScores=centerScores)#
+	AsByB<-bootSvd_LD_output$As#
+	out_contents<-list()#
+#
+	#######
+	#always include#
+	out_contents[['LD_moments']]<-getMomentsAndMomentCI(AsByB,diag(n),talk=FALSE)#
+#
+	AsByK<-reindexPCsByK(PCsByB=AsByB)#
+	out_contents[['LD_percentiles']]<-lapply(AsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))#
+		})#
+#
+	#########
+	if('initial_SVD' %in% output | output == 'all'){#
+		out_contents[['initial_SVD']]<-list(V=V,d=d,U=U)#
+	}#
+	if('HD_moments' %in% output | output == 'all'){#
+		out_contents[['HD_moments']]<-getMomentsAndMomentCI(AsByB,V,talk=talk)#
+	}#
+#
+	##### Using Full HD Distribution #####
+	if('full_HD_PC_dist' %in% output| 'HD_percentiles' %in% output | output == 'all'){#
+#
+		if(talk) cat('...Calculating HD Bootstrap PC distribution...')#
+		VsByK<-reindexPCsByK(As2Vs(AsByB,V=V,mc.cores=mc.cores))#
+#
+		if('full_HD_PC_dist' %in% output | output == 'all'){#
+			out_contents[['VsByK']]<-VsByK#
+		}	#
+		if('HD_percentiles' %in% output | output == 'all'){#
+			out_contents[['HD_percentiles']]<-lapply(VsByK,function(mat_k){#
+			t(apply(mat_k,2,function(x) quantile(x,percentiles)))})#
+		}#
+	}#
+	###################################
+#
+	if('full_LD_PC_dist' %in% output | output == 'all'){#
+		out_contents[['AsByK']]<-reindexPCsByK(AsByB)#
+	}#
+	if('d_dist' %in% output | output == 'all'){#
+		out_contents[['d_dist']]<-bootSvd_LD_output$ds#
+	}#
+	if('U_dist' %in% output | output == 'all'){#
+		out_contents[['U_dist']]<-bootSvd_LD_output$Us#
+	}#
+#
+	return(out_contents)#
+}#
+#
+#' Quickly calculates bootstrap PCA results (wrapper for bootSvd)#
+#' @param ... passed to \code{\link{bootSvd}}#
+#' @return bootSvd(...)#
+#' Everything is passed to \code{\link{bootSvd}}#
+bootPCA<-function(...) bootSvd(...)#
+#!!!!!! Demean each sample??#
+#      _                _                                  _   #
+#     | |              | |                                | |  #
+#   __| | _____   _____| | ___  _ __  _ __ ___   ___ _ __ | |_ #
+#  / _` |/ _ \ \ / / _ \ |/ _ \| '_ \| '_ ` _ \ / _ \ '_ \| __|#
+# | (_| |  __/\ V /  __/ | (_) | |_) | | | | | |  __/ | | | |_ #
+#  \__,_|\___| \_/ \___|_|\___/| .__/|_| |_| |_|\___|_| |_|\__|#
+#                              | |                             #
+#                              |_|                             #
+# # Currently used in simulations but not main EEG analysis?#
+# # Get distance in terms of Frobenius norm#
+# #Beran Style Intervals#
+# #just |v'v_b| and ||V'V_b|| (for subspace)#
+# # The resulting CRs will be LOWER BOUNDS for |V'V_b|#
+# getFrobDist<-function(AtB=NULL,A,B){#
+# 	if(is.null(AtB)) AtB<-crossprod(A,B)#
+# 	return(sqrt(sum(AtB^2)))#
+# }#
+#
+# #traditional bootstrap#
+# bootSvd_LDTraditional<-function(Y,bInds,K,warning_type='silent',matchSign=TRUE,talk=FALSE){#
+# 	B<-dim(bInds)[1]#
+# 	n<-dim(Y)[2]#
+#
+# 	#Objects to store results#
+# 	#Put B in rows#
+# 	dbs<-#
+# 	Ubs<-#
+# 	Vbs<-list()#
+#
+# 	V<-fastSvd(t(Y),nv=K,warning_type=warning_type)$v#
+#
+# 	#Do SVDs#
+# 	if(talk) pb<-txtProgressBar(min = 1, max = B,  char = "=", style = 3)#
+# 	timeSVD<-system.time({#
+# 	for(b in 1:B){		#
+# 		svdYbt<-fastSvd(t(Y[,bInds[b,]]),nv=K,warning_type=warning_type) #Sets Y=UDV'#
+# 		Vb<-svdYbt$v #already has K cols#
+# 		dbs[[b]]<-svdYbt$d#
+# 		Ub<-svdYbt$u[,1:K]#
+# 		#check sign#
+# 		if(matchSign){#
+# 			for(k in 1:K){#
+# 				if(crossprod(V[,k],Vb[,k])<0) { Vb[,k]<- -Vb[,k]; Ub[,k]<- -Ub[,k]}#
+# 		}}		#
+# 		Vbs[[b]]<-Vb#
+# 		Ubs[[b]]<-Ub#
+#
+# 		if(talk) setTxtProgressBar(pb,b)#
+# 	}#
+# 	})#
+#
+# 	return(list(Vbs=Vbs,dbs=dbs,Ubs=Ubs))#
+# }
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+debug(bootSvd)
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+debug(bootSvd_LD_output)
+debug(bootSvd_LD)
+undebug(bootSvd)
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+print(n)
+B
+dim(DUtP)
+DUtP <- DUt[, bInds[b, ]]
+dim(DUtP)
+DUtP <- DUt[, bInds[b, ]]
+dim(bInds)
+dim(DUtP)
+dim(DUt)
+Q
+debug(bootSvd)
+b<-bootSvd(V=svdYt$v,d=svdYt$v,U=svdYt$u,B=1000,K=3,output='HD_moments')
+dim(DUt)
+dim(d)
+class(d)
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output='HD_moments')
+Q
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output='HD_moments')
+Q
+undebug(bootSvd)
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output='HD_moments')
+Q
+undebug(bootSvd_LD)
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output='HD_moments')
+Create the package:#
+library('roxygen2')#
+library('devtools')#
+#set the working directory#
+setwd("/Users/aaronfisher/Documents/JH/SMART/Vadim/Bootstrap SVD/package")#
+#create('hdboot') #only do this once#
+## Create the documentation fresh#
+document("hdboot", clean=TRUE)#
+## Install the package#
+install("hdboot")#
+## Check the help#
+library(hdboot)
+timer['bootstrap_PCA']<-system.time({#
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output='HD_moments')#
+})['elapsed']
+timer
+names(b)
+timer['bootstrap_PCA']<-system.time({#
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output=c('HD_moments','initial_SVD'))#
+})['elapsed']
+output=c('HD_moments','initial_SVD')
+'HD_moments' %in% output
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(V[,k]),colk)#
+	color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')#
+}
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk)#
+	color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')#
+}
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk)#
+	color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(b$initial_SVD$V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')#
+}
+?image
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('PC',k),xaxs='n')
+png(file=paste0(Sys.Date(),'_stirling_PC_fit+se.png'),width=700,height=500)#
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('PC',k),axes=FALSE)#
+	color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(b$initial_SVD$V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')#
+}
+?image
+box()
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('PC',k),axes=FALSE)#
+	color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(b$initial_SVD$V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')#
+	box()#
+}
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE)#
+	color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(b$initial_SVD$V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')#
+	box()#
+}#
+for(k in 1:K){#
+	maxSE<-max(c(moments$sdVs[[1]],moments$sdVs[[2]],moments$sdVs[[3]]))#
+	colk<-mappal(x=moments$sdVs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(moments$sdVs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}
+maxSE<-max(unlist(b$HD_moments$sdVs))
+unlist(b$HD_moments$sdVs)
+c(b$HD_moments$sdVs)
+b$HD_moments$sdVs
+names(b)
+names(b$HD)
+maxSE<-max(c(b$HD_moments$sdPCs))
+c(b$HD_moments$sdPCs)
+class(c(b$HD_moments$sdPCs))
+class(unlist(b$HD_moments$sdPCs))
+maxSE<-max(unlist(b$HD_moments$sdPCs[[1:K]]))
+unlist(b$HD_moments$sdPCs[[1:K]])
+maxSE<-max(unlist(b$HD_moments$sdPCs))
+maxSE
+for(k in 1:K){#
+	maxSE<-max(unlist(b$HD_moments$sdPCs))#
+	colk<-mappal(x=b$HD_moments$sdVs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(b$HD_moments$sdVs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}
+for(k in 1:K){#
+	maxSE<-max(unlist(b$HD_moments$sdPCs))#
+	colk<-mappal(x=b$HD_moments$sdPCs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(b$HD_moments$sdPCs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE)
+k
+colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE)
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))
+colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE)
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE,autoLegend=TRUE)
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE)
+color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(range(b$initial_SVD$V[,k]),digits=2), rect.col=colk, align='rb',gradient='y')
+image0
+image0
+image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE)
+!!!!! questions for Leo#
+# sub/helper functions? how to handle best?#
+# passing ... to multiple sub functions OK?#
+#
+#Create the package:#
+library('roxygen2')#
+library('devtools')#
+#set the working directory#
+setwd("/Users/aaronfisher/Documents/JH/aaronjfisher_package")#
+#create('hdboot') #only do this once#
+## Create the documentation fresh#
+document("aaronjfisher", clean=TRUE)#
+## Install the package#
+install("aaronjfisher")
+for(k in 1:K){#
+	maxSE<-max(unlist(b$HD_moments$sdPCs))#
+	colk<-mappal(x=b$HD_moments$sdPCs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(b$HD_moments$sdPCs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE,autoLegend=TRUE)#
+	box()#
+}#
+for(k in 1:K){#
+	maxSE<-max(unlist(b$HD_moments$sdPCs))#
+	colk<-mappal(x=b$HD_moments$sdPCs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(b$HD_moments$sdPCs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}
+colAll<-mappal(x=c(0,maxSE),pal_vec=colSE,type='seq',interp_x=TRUE)
+color.legend(xl=1.02, yb=0,xr=1.08,yt=1,legend=signif(c(0,maxSE)), rect.col=colAll, align='rb',gradient='y')
+cumsum(timer)
+timer<-c()#
+#
+timer['initial_svd']<-system.time({#
+svdYt<-fastSvd(t(Y))#
+})['elapsed']#
+#
+#plot(svdYt$d[1:20]^2)#
+set.seed(0)#
+timer['bootstrap_PCA']<-system.time({#
+b<-bootSvd(V=svdYt$v,d=svdYt$d,U=svdYt$u,B=1000,K=3,output=c('HD_moments','initial_SVD'))#
+})['elapsed']#
+#
+#png(file=paste0(Sys.Date(),'_stirling_PC_fit+se.png'),width=700,height=500)#
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	#not using max_abs_x feature#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE,autoLegend=TRUE)#
+	box()#
+}#
+for(k in 1:K){#
+	maxSE<-max(unlist(b$HD_moments$sdPCs))#
+	colk<-mappal(x=b$HD_moments$sdPCs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(b$HD_moments$sdPCs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}#
+cumsum(timer)
+?image
+image0
+image0<-function(x,col=mappal(x,pal_vec=rev(diverge_hcl(50)),type='div',interp_x=TRUE),autoLegend=FALSE,...){#
+	image(t(x[nrow(x):1,]),col=col,...)#
+	if(autoLegend){#
+		color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=col, align='rb',gradient='y')#
+	}#
+}
+png(file=paste0(Sys.Date(),'_stirling_PC_fit+se.png'),width=700,height=500)#
+par(mfrow=c(2,K),mar=c(2,2,2,6),oma=c(0,0,0,0))#
+for(k in 1:K) {#
+	#not using max_abs_x feature#
+	colk<-mappal(x=b$initial_SVD$V[,k],pal_vec=colPC,interp_x=TRUE)#
+	image0(get2dFace(b$initial_SVD$V[,k]),colk,main=paste0('Fitted PC',k),axes=FALSE,autoLegend=TRUE)#
+	box()#
+}#
+for(k in 1:K){#
+	maxSE<-max(unlist(b$HD_moments$sdPCs))#
+	colk<-mappal(x=b$HD_moments$sdPCs[[k]],pal_vec=colSE,type='seq',interp_x=TRUE,max_abs_x=maxSE)#
+	image0(get2dFace(b$HD_moments$sdPCs[[k]]),col=colk,autoLegend=TRUE,main=paste0('Bootstrap SE, PC',k),axes='FALSE')#
+	box()#
+}
+x<-get2dFace(facesMat[,22])
+pal(sequential_hcl(10,c.=c(0,0)))
+pal(diverge_hcl(10))
+image0(x,col=sequential_hcl(10,c.=c(0,0)))
+image0(1-x,col=diverge_hcl(10))
+image0(1-x,col=mappal(1-x,rev(diverge_hcl(100)),interp_x=TRUE),autoLegend=TRUE)
+plotFaceVec(1-facesMat[,101])
+vec2long<-function(vec,split=rep(NA,length(vec))){#for use in ggplot#
+	all(!is.na(faces3d[,,1])) #cool#
+	coord<-expand.grid(dimPic[1]:1,1:dimPic[2])#
+	colnames(coord)<-c('y','x')#
+	out<-as.data.frame(cbind(vec,coord,split))#
+	names(out)[1]<-'value'#
+	return(out)#
+}#
+#
+facesSubMat<-facesMat[,1:3]#
+getLongMat<-function(facesSubMat){#
+	p<-dim(facesSubMat)[1]#
+	n<-dim(facesSubMat)[2]#
+	out<-data.frame(matrix(NA,nrow=n*p,ncol=4)) #x+y+value+split=4#
+	names(out)<-c('value','y','x','split')#
+	outInd<-1#
+	for(i in 1:n){#
+		out[outInd:(outInd+p-1),]<-vec2long(facesSubMat[,i],split=i)#
+		outInd<-outInd+p#
+	}#
+	return(out)#
+}#
+ggplot() + geom_tile(data=vec2long(facesMat[,101]),aes(x=x,y=y,fill=value))#
+testLong<-getLongMat(facesMat[,101:103])
+ggplot() + geom_tile(data=testLong,aes(x=x,y=y,fill=value))+facet_grid(~split)
+ggplot() + geom_tile(data=getLongMat(V[,1:3]),aes(x=x,y=y,fill=value))+facet_grid(~split)+scale_fill_gradient2()
+ggplot() + geom_tile(data=getLongMat(b$initial_SVD$V[,1:3]),aes(x=x,y=y,fill=value))+facet_grid(~split)+scale_fill_gradient2()
+ggplot() + geom_tile(data=getLongMat(b$HD_moments$sdPCs[[1]]),aes(x=x,y=y,fill=value))+facet_grid(~split)+scale_fill_gradient2()
