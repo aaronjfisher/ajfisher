@@ -2,8 +2,7 @@
 \alias{inrange}
 \title{Check if x is an interval}
 \usage{
-  inrange(x, l = 0, u = 1, strict_lower = FALSE,
-    strict_upper = FALSE)
+inrange(x, l = 0, u = 1, strict_lower = FALSE, strict_upper = FALSE)
 }
 \arguments{
   \item{x}{value of interest}
@@ -19,7 +18,7 @@
   being classified as not in the interval}
 }
 \description{
-  Check if x is an interval
+Check if x is an interval
 }
 \examples{
 inrange(5,l=5,u=8)

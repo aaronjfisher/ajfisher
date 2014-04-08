@@ -1,4 +1,4 @@
-Package: aaronjfisher
+Package: ajfisher
 Title: Aaron's quick little functions
 Version: 0.1
 Author: Aaron Fisher
@@ -9,5 +9,3 @@ Depends:
     colorspace,
     plotrix
 License: GPL-2
-Collate:
-    'AaronsFunctions.r'

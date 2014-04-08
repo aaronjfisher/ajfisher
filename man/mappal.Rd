@@ -2,9 +2,8 @@
 \alias{mappal}
 \title{Mapping color palettes to values}
 \usage{
-  mappal(x, pal_vec = rev(sequential_hcl(50)),
-    type = "div", max_abs_x = max(abs(x)),
-    interp_x = FALSE)
+mappal(x, pal_vec = rev(sequential_hcl(50)), type = "div",
+  max_abs_x = max(abs(x)), interp_x = FALSE)
 }
 \arguments{
   \item{x}{vector of values for which color should be
@@ -32,18 +31,17 @@
   elements. See examples below.}
 }
 \value{
-  a color vector where the maximum absolute value of
-  \code{x} corresponds to the highest intensity color, and
-  all other colors are proportional. If a diverging palette
-  is used and \code{abs(max(x[x>0]))} >>
-  \code{abs(min(x[x<0]))}, then no negative entry will be
-  as intensely colored as the maximum positive value of
-  \code{x} (and visa versa).
+a color vector where the maximum absolute value of \code{x}
+corresponds to the highest intensity color, and all other
+colors are proportional. If a diverging palette is used and
+\code{abs(max(x[x>0]))} >> \code{abs(min(x[x<0]))}, then no
+negative entry will be as intensely colored as the maximum
+positive value of \code{x} (and visa versa).
 }
 \description{
-  Best used with color palettes generated from the
-  colorspace package, using \code{sequential_hcl,
-  diverge_hcl, or rainbow_hcl}.
+Best used with color palettes generated from the colorspace
+package, using \code{sequential_hcl, diverge_hcl, or
+rainbow_hcl}.
 }
 \examples{
 palQual<-rainbow_hcl(5)
@@ -88,6 +86,12 @@ ppMat <- function (n,r=4) {
 }
 
 x<-ppMat(100)+.25
-image(volcano,mappal(x))
+#With mappal
+mappedColImage<-mappal(x,palDiv,interp_x=TRUE)
+image(x,mappedColImage)
+color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=mappedColImage,  align='rb', gradient='y')
+#Without mappal
+image(x,palDiv)
+color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=palDiv,  align='rb', gradient='y')
 }
 

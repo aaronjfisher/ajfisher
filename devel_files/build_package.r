@@ -6,7 +6,7 @@
 library('roxygen2')
 library('devtools')
 #set the working directory
-setwd("/Users/aaronfisher/Documents/JH/aaronjfisher_package")
+setwd("/Users/aaronfisher/Documents/aaronjfisher_package")
 
 
 #create('hdboot') #only do this once
@@ -14,17 +14,17 @@ setwd("/Users/aaronfisher/Documents/JH/aaronjfisher_package")
 
  
 ## Create the documentation fresh
-document("aaronjfisher", clean=TRUE)
+document("package", clean=TRUE)
 ## Install the package
-install("aaronjfisher")
+install("package")
  
 ## Check the help
-library(aaronjfisher)
-help(package=aaronjfisher)
+library(ajfisher)
+help(package=ajfisher)
  
 ## Check the doc, pkg
-check_doc("aaronjfisher")
-system.time (check("aaronjfisher"))
+check_doc("ajfisher")
+system.time (check("ajfisher"))
 
 
 

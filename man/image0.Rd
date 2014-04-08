@@ -2,9 +2,8 @@
 \alias{image0}
 \title{Reorients an image for plotting}
 \usage{
-  image0(x,
-    col = mappal(x, pal_vec = rev(diverge_hcl(50)), type = "div", interp_x = TRUE),
-    autoLegend = FALSE, ...)
+image0(x, col = mappal(x, pal_vec = rev(diverge_hcl(50)), type = "div",
+  interp_x = TRUE), autoLegend = FALSE, ...)
 }
 \arguments{
   \item{x}{matrix to be plotted}
@@ -25,12 +24,12 @@
   \code{color.legend}}
 }
 \value{
-  By default, \code{image0()} uses a red and blue diverging
-  color palette from the \code{colorspace} package, and
-  builds a pallete using \code{mappal}.
+By default, \code{image0()} uses a red and blue diverging
+color palette from the \code{colorspace} package, and
+builds a pallete using \code{mappal}.
 }
 \description{
-  Reorients an image for plotting
+Reorients an image for plotting
 }
 \examples{
 #Setup

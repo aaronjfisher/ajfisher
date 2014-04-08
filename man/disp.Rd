@@ -2,9 +2,9 @@
 \alias{disp}
 \title{Make a new window for plotting (on mac OR windows)}
 \usage{
-  disp()
+disp()
 }
 \description{
-  Make a new window for plotting (on mac OR windows)
+Make a new window for plotting (on mac OR windows)
 }
 

@@ -98,15 +98,20 @@ progCode<-function(){
 #'
 #' #with default colors
 #' image0(x)
-image0<-function(x,col=mappal(x,pal_vec=rev(diverge_hcl(50)),type='div',interp_x=TRUE),autoLegend=FALSE,...){
+image0<-function(x,col=mappal(x,col_pal=rev(diverge_hcl(50)),type='div',interp_x=TRUE),autoLegend=FALSE,...){
 	image(t(x[nrow(x):1,]),col=col,...)
 	if(autoLegend){
-		color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=col, align='rb',gradient='y',...)
+		color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=col, align='rb',gradient='y')
 	}
 }
-#!!!??? passing ... twice is making some stuff weird? It always passes everything to everything?
 
-
+#' Fast
+fast.color.legend<-function(x,y,z,stretch=1,spacing=.05,digits=2,col_pal,...){
+	spacex<-diff(range(x))*spacing
+	addy<-diff(range(y))*(stretch-1)
+	col<-mappal(z,col_pal,interp_x=TRUE)
+	color.legend(xl=max(x)+spacex, yb=min(y)-addy,xr=max(x)+spacex*2,yt=max(y)+addy,legend=signif(range(z),digits=digits), align='rb',gradient='y',rect.col=col,...)
+}
 
 
 
@@ -133,11 +138,11 @@ pal <- function(col, border = "light gray", ...)
 #' helper function for \code{mappal}
 #' 
 #' This is primarily a helper function for \code{mappal}. Users should directly call \code{mappal} rather than calling \code{mappal_abs}.
-mappal_abs<-function(x,pal_vec,max_abs_x=max(abs(x)),type='div'){
-	n<-length(pal_vec)
+mappal_abs<-function(x,col_pal,max_abs_x=max(abs(x)),type='div'){
+	n<-length(col_pal)
 	x<-abs(x)
 	xCut<-cut(c(max_abs_x,x),breaks=n)[-1]
-	return(pal_vec[xCut])
+	return(col_pal[xCut])
 }
 #palette should be entered going from "zero" to "max" color intensity for x entries with highest abs values
 #use max_abs_x input so that the max_abs_x *would* be colored with the most extreme color in the palette, if that max_abs_x is attained.
@@ -156,8 +161,8 @@ mappal_abs<-function(x,pal_vec,max_abs_x=max(abs(x)),type='div'){
 #'
 #' Best used with color palettes generated from the colorspace package, using \code{sequential_hcl, diverge_hcl, or rainbow_hcl}.
 #' @param x vector of values for which color should be mapped to. Can also be a matrix, if using image(). In this case, see the \code{interp_x} parameter.
-#' @param pal_vec the color palette to be mapped to the vector. The head of the vector should correspond to lower values of x, and the tail of the vector should correspond to higher values of x. If a diverging color palette is being used, the "zero" color should be the middle element of this vector.
-#' @param type describes the \code{pal_vec} vector entered. Can be either 'div' for diverging, 'qual' for qualitative, or 'seq' for sequential.
+#' @param col_pal the color palette to be mapped to the vector. The head of the vector should correspond to lower values of x, and the tail of the vector should correspond to higher values of x. If a diverging color palette is being used, the "zero" color should be the middle element of this vector.
+#' @param type describes the \code{col_pal} vector entered. Can be either 'div' for diverging, 'qual' for qualitative, or 'seq' for sequential.
 #' max_abs_x for use if several plots are being created, and color scales should be consistent across all plots. Set max_abs_x to the maximum absolute value of all elements being plotted. See example below.
 #' @param interp_x for use in \code{image()} style plots, where the color vector required is not a direct mapping. If set to FALSE, the color is mapped directly to the x elements. See examples below.
 #'
@@ -208,22 +213,32 @@ mappal_abs<-function(x,pal_vec,max_abs_x=max(abs(x)),type='div'){
 #' }
 #'
 #' x<-ppMat(100)+.25
-#' image(volcano,mappal(x))
-mappal<-function(x,pal_vec=rev(sequential_hcl(50)),type='div',max_abs_x=max(abs(x)),interp_x=FALSE){
+#'
+#'par(mfrow=c(1,2),mar=c(3,2,3,4))
+#'
+#' #with mappal()
+#' mappedColImage<-mappal(x,palDiv,interp_x=TRUE)
+#' image(x,col=mappedColImage,main='With mappal(),\ngray=zero')
+#' color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=mappedColImage,  align='rb', gradient='y')
+#' 
+#' #without mappal()
+#' image(x,col=palDiv,main='Without mappal(),\nred=zero, gray>zero')
+#' color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=palDiv,  align='rb', gradient='y')
+mappal<-function(x,col_pal=rev(sequential_hcl(50)),type='div',max_abs_x=max(abs(x)),interp_x=FALSE){
 	
 	if(interp_x) x<-seq(min(x),max(x),len=100)
 
 	if(type=='qual'){
-		return(pal_vec[cut(x,breaks=length(pal_vec))])
+		return(col_pal[cut(x,breaks=length(col_pal))])
 	}
 
-	if(type=='seq') return(mappal_abs(x,pal_vec,max_abs_x=max_abs_x))
+	if(type=='seq') return(mappal_abs(x,col_pal,max_abs_x=max_abs_x))
 
 	#Else, if type=='div' (rest of this function)
 
 	xNegInd <- which(x<0)
 	xPosInd <- which(x>=0)
-	lPal<-length(pal_vec)
+	lPal<-length(col_pal)
 	zeroInd<-ceiling(lPal/2)
 
 	#object to store output
@@ -231,9 +246,9 @@ mappal<-function(x,pal_vec=rev(sequential_hcl(50)),type='div',max_abs_x=max(abs(
 	out<-rep(NA,length(x))	
 
 	if(length(xNegInd)>0)
-		out[xNegInd]<-mappal_abs(x[xNegInd],pal_vec[zeroInd:1],max_abs_x=max_abs_x) #reverse order so it goes from low to high intesity (from zero color to high color)
+		out[xNegInd]<-mappal_abs(x[xNegInd],col_pal[zeroInd:1],max_abs_x=max_abs_x) #reverse order so it goes from low to high intesity (from zero color to high color)
 	if(length(xPosInd)>0)
-		out[xPosInd]<-mappal_abs(x[xPosInd],pal_vec[zeroInd:lPal],max_abs_x=max_abs_x)
+		out[xPosInd]<-mappal_abs(x[xPosInd],col_pal[zeroInd:lPal],max_abs_x=max_abs_x)
 
 	return(out)
 }
