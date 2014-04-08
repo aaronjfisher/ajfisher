@@ -1,7 +1,7 @@
 ajfisher
 ========
 
-R package 'aaronjfisher', which contains Aaron's helper functions.
+R package 'ajfisher', which contains Aaron's helper functions.
 
 
 To install:
