@@ -2,7 +2,7 @@
 \alias{mappal}
 \title{Mapping color palettes to values}
 \usage{
-mappal(x, pal_vec = rev(sequential_hcl(50)), type = "div",
+mappal(x, col_pal = rev(sequential_hcl(50)), type = "div",
   max_abs_x = max(abs(x)), interp_x = FALSE)
 }
 \arguments{
@@ -10,14 +10,14 @@ mappal(x, pal_vec = rev(sequential_hcl(50)), type = "div",
   mapped to. Can also be a matrix, if using image(). In
   this case, see the \code{interp_x} parameter.}
 
-  \item{pal_vec}{the color palette to be mapped to the
+  \item{col_pal}{the color palette to be mapped to the
   vector. The head of the vector should correspond to lower
   values of x, and the tail of the vector should correspond
   to higher values of x. If a diverging color palette is
   being used, the "zero" color should be the middle element
   of this vector.}
 
-  \item{type}{describes the \code{pal_vec} vector entered.
+  \item{type}{describes the \code{col_pal} vector entered.
   Can be either 'div' for diverging, 'qual' for
   qualitative, or 'seq' for sequential. max_abs_x for use
   if several plots are being created, and color scales
@@ -86,12 +86,16 @@ ppMat <- function (n,r=4) {
 }
 
 x<-ppMat(100)+.25
-#With mappal
+
+par(mfrow=c(1,2),mar=c(3,2,3,4))
+
+#with mappal()
 mappedColImage<-mappal(x,palDiv,interp_x=TRUE)
-image(x,mappedColImage)
+image(x,col=mappedColImage,main='With mappal(),\\ngray=zero')
 color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=mappedColImage,  align='rb', gradient='y')
-#Without mappal
-image(x,palDiv)
+
+#without mappal()
+image(x,col=palDiv,main='Without mappal(),\\nred=zero, gray>zero')
 color.legend(xl=1.02, yb=0,xr=1.07,yt=1,legend=signif(range(x),digits=2), rect.col=palDiv,  align='rb', gradient='y')
 }
 

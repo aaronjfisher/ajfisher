@@ -2,7 +2,7 @@
 \alias{image0}
 \title{Reorients an image for plotting}
 \usage{
-image0(x, col = mappal(x, pal_vec = rev(diverge_hcl(50)), type = "div",
+image0(x, col = mappal(x, col_pal = rev(diverge_hcl(50)), type = "div",
   interp_x = TRUE), autoLegend = FALSE, ...)
 }
 \arguments{

@@ -4,8 +4,8 @@ ajfisher
 R package 'ajfisher', which contains Aaron's helper functions.
 
 
-To install:
+To install, use the `R` code:
 
   library(devtools);
-  install_github(repo='ajfisher',user='aaronjfisher',subdir='package')
+  install_github(repo='ajfisher',user='aaronjfisher')
   
