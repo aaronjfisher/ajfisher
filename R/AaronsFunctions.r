@@ -75,6 +75,7 @@ progCode<-function(){
 #' @param ... passed to \code{image} and \code{color.legend}
 #' @return By default, \code{image0()} uses a red and blue diverging color palette from the \code{colorspace} package, and builds a pallete using \code{mappal}.
 #' @export
+#' @import plotrix
 #'
 #' @examples
 #' #Setup
@@ -115,6 +116,7 @@ image0<-function(x,col=mappal(x,col_pal=rev(diverge_hcl(50)),type='div',interp_x
 #' @param digits number of significant digits used in legend labels.
 #' @param ... passed to \code{\link{color.legend}}.
 #' @export
+#' @import plotrix
 fast.color.legend<-function(x,y,z,col=mappal(z,rev(diverge_hcl(50)),interp_x=TRUE),lab='',stretch=1,spacing=.05,digits=2,...){
 	spacex<-diff(range(x))*spacing
 	addy<-diff(range(y))*(stretch-1)
@@ -184,6 +186,7 @@ mappal_abs<-function(x,col_pal,max_abs_x=max(abs(x)),type='div'){
 #' @return a color vector where the maximum absolute value of \code{x} corresponds to the highest intensity color, and all other colors are proportional. If a diverging palette is used and \code{abs(max(x[x>0]))} >> \code{abs(min(x[x<0]))}, then no negative entry will be as intensely colored as the maximum positive value of \code{x} (and visa versa).
 #'
 #' @export
+#' @import colorspace
 #'
 #' @examples
 #' palQual<-rainbow_hcl(5)
