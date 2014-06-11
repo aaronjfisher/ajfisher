@@ -71,7 +71,6 @@ progCode<-function(){
 #'
 #' @param x matrix to be plotted
 #' @param col passed to image
-#' @param colIsPal if TRUE, color is taken as a pallete that should be adjusted with mappal().
 #' @param autoLegend tells whether an automatic legend bar for color should be generated. If the matrix plotted is faily high dimensional, \code{autoLegend=TRUE} will generally work well. If set to FALSE, it can be useful to type \code{image0} into the console to quickly see a sample code entry for \code{color.legend}.
 #' @param ... passed to \code{image} and \code{color.legend}
 #' @return By default, \code{image0()} uses a red and blue diverging color palette from the \code{colorspace} package, and builds a pallete using \code{mappal}.
@@ -105,12 +104,25 @@ image0<-function(x,col=mappal(x,col_pal=rev(diverge_hcl(50)),type='div',interp_x
 	}
 }
 
-#' Fast
-fast.color.legend<-function(x,y,z,stretch=1,spacing=.05,digits=2,col_pal,...){
+#' Get quick and dirty color legend near the x axis
+#'
+#'
+#' @param x variable on horizontal axis.
+#' @param y variable on virtical axis.
+#' @param z variable mapped to color.
+#' @param stretch factor to expand the height of the legend.
+#' @param spacing distance from legend to the right border of plot.
+#' @param digits number of significant digits used in legend labels.
+#' @param ... passed to \code{\link{color.legend}}.
+#' @export
+fast.color.legend<-function(x,y,z,col=mappal(z,rev(diverge_hcl(50)),interp_x=TRUE),lab='',stretch=1,spacing=.05,digits=2,...){
 	spacex<-diff(range(x))*spacing
 	addy<-diff(range(y))*(stretch-1)
-	col<-mappal(z,col_pal,interp_x=TRUE)
-	color.legend(xl=max(x)+spacex, yb=min(y)-addy,xr=max(x)+spacex*2,yt=max(y)+addy,legend=signif(range(z),digits=digits), align='rb',gradient='y',rect.col=col,...)
+	labels<-c()
+	labels[1]<-signif(min(z),digits=digits)
+	labels[2]<-lab
+	labels[3]<-signif(max(z),digits=digits)
+	color.legend(xl=max(x)+spacex, yb=min(y)-addy,xr=max(x)+spacex*2,yt=max(y)+addy,legend=labels, align='rb',gradient='y',rect.col=col,...)
 }
 
 
@@ -119,6 +131,9 @@ fast.color.legend<-function(x,y,z,stretch=1,spacing=.05,digits=2,col_pal,...){
 #'
 #' Copy pasted from HCL-Based Color Palettes in R
 #' http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf
+#' @param col a color palette to plot.
+#' @param border color of border separating elements of the palette.
+#' @param ... passed to \code{link{plot}}.
 #' @export
 #' @examples
 #' pal(rainbow_hcl(50,c=100,l=80))
@@ -163,7 +178,7 @@ mappal_abs<-function(x,col_pal,max_abs_x=max(abs(x)),type='div'){
 #' @param x vector of values for which color should be mapped to. Can also be a matrix, if using image(). In this case, see the \code{interp_x} parameter.
 #' @param col_pal the color palette to be mapped to the vector. The head of the vector should correspond to lower values of x, and the tail of the vector should correspond to higher values of x. If a diverging color palette is being used, the "zero" color should be the middle element of this vector.
 #' @param type describes the \code{col_pal} vector entered. Can be either 'div' for diverging, 'qual' for qualitative, or 'seq' for sequential.
-#' max_abs_x for use if several plots are being created, and color scales should be consistent across all plots. Set max_abs_x to the maximum absolute value of all elements being plotted. See example below.
+#' @param max_abs_x for use if several plots are being created, and color scales should be consistent across all plots. Set max_abs_x to the maximum absolute value of all elements being plotted. See example below.
 #' @param interp_x for use in \code{image()} style plots, where the color vector required is not a direct mapping. If set to FALSE, the color is mapped directly to the x elements. See examples below.
 #'
 #' @return a color vector where the maximum absolute value of \code{x} corresponds to the highest intensity color, and all other colors are proportional. If a diverging palette is used and \code{abs(max(x[x>0]))} >> \code{abs(min(x[x<0]))}, then no negative entry will be as intensely colored as the maximum positive value of \code{x} (and visa versa).

@@ -19,11 +19,12 @@ mappal(x, col_pal = rev(sequential_hcl(50)), type = "div",
 
   \item{type}{describes the \code{col_pal} vector entered.
   Can be either 'div' for diverging, 'qual' for
-  qualitative, or 'seq' for sequential. max_abs_x for use
-  if several plots are being created, and color scales
-  should be consistent across all plots. Set max_abs_x to
-  the maximum absolute value of all elements being plotted.
-  See example below.}
+  qualitative, or 'seq' for sequential.}
+
+  \item{max_abs_x}{for use if several plots are being
+  created, and color scales should be consistent across all
+  plots. Set max_abs_x to the maximum absolute value of all
+  elements being plotted. See example below.}
 
   \item{interp_x}{for use in \code{image()} style plots,
   where the color vector required is not a direct mapping.

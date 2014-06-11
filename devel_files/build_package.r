@@ -6,10 +6,7 @@
 library('roxygen2')
 library('devtools')
 #set the working directory
-setwd("/Users/aaronfisher/Documents/aaronjfisher_package")
-
-
-#create('hdboot') #only do this once
+setwd("/Users/aaronfisher/Documents/ajfisher_package")
 
 
  
@@ -23,7 +20,7 @@ library(ajfisher)
 help(package=ajfisher)
  
 ## Check the doc, pkg
-check_doc("ajfisher")
+check_doc("package")
 system.time (check("ajfisher"))
 
 

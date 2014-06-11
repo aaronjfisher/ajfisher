@@ -4,6 +4,14 @@
 \usage{
 pal(col, border = "light gray", ...)
 }
+\arguments{
+  \item{col}{a color palette to plot.}
+
+  \item{border}{color of border separating elements of the
+  palette.}
+
+  \item{...}{passed to \code{link{plot}}.}
+}
 \description{
 Copy pasted from HCL-Based Color Palettes in R
 http://cran.r-project.org/web/packages/colorspace/vignettes/hcl-colors.pdf

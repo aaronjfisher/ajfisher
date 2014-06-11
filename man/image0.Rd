@@ -10,9 +10,6 @@ image0(x, col = mappal(x, col_pal = rev(diverge_hcl(50)), type = "div",
 
   \item{col}{passed to image}
 
-  \item{colIsPal}{if TRUE, color is taken as a pallete that
-  should be adjusted with mappal().}
-
   \item{autoLegend}{tells whether an automatic legend bar
   for color should be generated. If the matrix plotted is
   faily high dimensional, \code{autoLegend=TRUE} will
