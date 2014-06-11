@@ -1,4 +1,5 @@
 export(disp)
+export(fast.color.legend)
 export(image0)
 export(inrange)
 export(lenUni)
